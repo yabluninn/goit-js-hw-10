@@ -6,12 +6,15 @@ import SortCss from 'postcss-sort-media-queries';
 
 export default defineConfig(({ command }) => {
   return {
+    base: '/goit-js-hw-10/',
+    root: 'src',
     define: {
       [command === 'serve' ? 'global' : '_global']: {},
     },
-    root: 'src',
     build: {
       sourcemap: true,
+      outDir: '../dist',
+      emptyOutDir: true,
       rollupOptions: {
         input: glob.sync('./src/*.html'),
         output: {
@@ -20,29 +23,21 @@ export default defineConfig(({ command }) => {
               return 'vendor';
             }
           },
-          entryFileNames: chunkInfo => {
-            if (chunkInfo.name === 'commonHelpers') {
-              return 'commonHelpers.js';
-            }
-            return '[name].js';
-          },
-          assetFileNames: assetInfo => {
-            if (assetInfo.name && assetInfo.name.endsWith('.html')) {
-              return '[name].[ext]';
-            }
-            return 'assets/[name]-[hash][extname]';
-          },
+          entryFileNames: chunkInfo =>
+            chunkInfo.name === 'commonHelpers'
+              ? 'commonHelpers.js'
+              : '[name].js',
+          assetFileNames: assetInfo =>
+            assetInfo.name && assetInfo.name.endsWith('.html')
+              ? '[name].[ext]'
+              : 'assets/[name]-[hash][extname]',
         },
       },
-      outDir: '../dist',
-      emptyOutDir: true,
     },
-    plugins: [
-      injectHTML(),
-      FullReload(['./src/**/**.html']),
-      SortCss({
-        sort: 'mobile-first',
-      }),
-    ],
+    // plugins: [
+    //   injectHTML(),
+    //   FullReload(['./src/**/*.html']), // чуть улучшил путь
+    //   SortCss({ sort: 'mobile-first' }),
+    // ],
   };
 });
