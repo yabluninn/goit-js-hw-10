@@ -13,22 +13,22 @@ form.addEventListener('submit', event => {
   new Promise((resolve, reject) => {
     setTimeout(() => {
       if (state === 'fulfilled') {
-        resolve('✅ Notification fulfilled!');
+        resolve(delay);
       } else {
-        reject('❌ Notification rejected!');
+        reject(delay);
       }
     }, delay);
   })
-    .then(message => {
+    .then(delayValue => {
       iziToast.success({
         title: 'Success',
-        message: message,
+        message: `✅Fulfilled promise in ${delayValue}ms`,
       });
     })
-    .catch(error => {
+    .catch(delayValue => {
       iziToast.error({
         title: 'Error',
-        message: error,
+        message: `❌Rejected promise in ${delayValue}ms`,
       });
     });
 });
