@@ -64,10 +64,15 @@ const options = {
       startButton.disabled = false;
       startButton.addEventListener('click', () => {
         startButton.disabled = true;
+        dateInput.disabled = true;
+
         const timer = setInterval(() => {
           const leftTime = userSelectedDate.getTime() - Date.now();
           if (leftTime <= 0) {
             clearInterval(timer);
+            updateTimerInterface({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+            dateInput.disabled = false;
+            return;
           }
           updateTimerInterface(convertMs(leftTime));
         }, 1000);
